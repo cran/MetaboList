@@ -2,7 +2,7 @@ Package: MetaboList
 Type: Package
 Title: Annotation of Metabolites from Liquid Chromatography-Mass
         Spectrometry Data
-Version: 1.1
+Version: 1.2
 Author: Manuel David Peris Diaz
 Depends: R (>= 3.2.3)
 Imports: enviPick
@@ -11,6 +11,6 @@ Description: Automatic metabolite annotation from Liquid Chromatography-Mass Spe
 License: GPL-2
 LazyData: TRUE
 NeedsCompilation: no
-Packaged: 2017-04-09 10:28:32 UTC; manu
+Packaged: 2017-04-30 17:08:30 UTC; manu
 Repository: CRAN
-Date/Publication: 2017-04-09 13:39:58 UTC
+Date/Publication: 2017-04-30 19:11:52 UTC

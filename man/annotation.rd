@@ -41,7 +41,7 @@ ppm = TRUE)}
 }
 \value{
   \item{annotation}{Annotated metabolites filtered based on the maximum intensity found in a retention time value. }
-  \item{annotationfull}{It contains the metabolites annotated for a set of retention times with the following columns: Metabolite name; Ion metabolite; retention time (Rt) (min); Interval Peak (min); Area; Maximum intensity;MS mode}
+  \item{annotationfull}{It contains the metabolites annotated for a set of retention times with the following columns: Metabolite name; Ion metabolite; retention time (Rt) (min);  Peak width (min); Area; Signal intensity;MS Level}
   \item{nodetected}{List with the fragments no detected to each metabolite.}
   \item{nodetectedMS2}{List with the fragments no detected to each metabolite considering remaining ion molecular in MS2 }
   \item{ms1}{Matrix with the pick-picking performed with enviPick function to LC-MS data}
@@ -57,5 +57,5 @@ library(MetaboList)
 # processMS<-annotate(file,database)
 #Output:
 #processMS$annotation
-# processMS$nodetected
+
 }
