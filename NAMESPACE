@@ -1,8 +1,10 @@
 exportPattern("^[[:alpha:]]+")
 import("enviPick")
-importFrom("utils", "read.csv", "write.csv")
+importFrom("utils", "read.csv", "write.csv","write.csv2")
 importFrom("stats", "aggregate", "smooth.spline","lm","cor","predict","loess")
 import("ggplot2")
 import("scales")
+import("dplyr")
 importFrom("graphics", "abline", "grid", "lines", "title")
 importFrom("grDevices", "dev.off", "pdf", "tiff")
+

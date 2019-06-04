@@ -1,4 +1,4 @@
-FullMS<-function(file, database, rtw = 10, mzw = 0.001, dmzgap = 50,
+FullMS<-function(file, database, rtw = 10, mzw = 0.0004, dmzgap = 50,
                        dmzdens = 20, drtgap = 25, drtsmall = 50, drtdens = 20, drtfill = 5,
                        drttotal = 100, minpeak = 5, recurs = 3, weight = 1,
                        SB = 2, SN = 1.5, minint = 1000, maxint = 9e+09, ion_mode = "positive",
@@ -14,9 +14,10 @@ FullMS<-function(file, database, rtw = 10, mzw = 0.001, dmzgap = 50,
   ms1 <- enviPickwrap(file, MSlevel = c(1),dmzgap ,ppm=ppm ,dmzdens,
                       drtdens,drtgap,drtsmall,drtfill ,drttotal ,
                       minpeak,recurs,weight , SB, SN,minint , maxint ,ended,ion_mode = ion_mode)
-  b <- as.data.frame(ms1[[8]])
+
+   b <- as.data.frame(ms1[[8]])
   f<-mzw
-  rtw=rtw
+  rtw<-rtw
   msbc=ms=name=X=fullms=rt=fullms2=rt2=to=fullmsset=msb=ions1bb= ppmdif=NULL
   ms <- data.frame()
 
@@ -81,14 +82,25 @@ FullMS<-function(file, database, rtw = 10, mzw = 0.001, dmzgap = 50,
           msbc<-data.frame()
           for (i in 1:length(fullms2)){
             msb <- subset(b, b[, 1] > fullms2[i] - f & b[, 1] < fullms2[i] + f )
+            msb<-as.matrix(msb)
+            if (nrow(msb) > 0){
+              if (nrow(msb)>1){
 
-            if (length(msb) > 0){
+                for (j in 1:nrow(msb)){
+                  ppmdif<-((as.numeric(msb[j,1])-fullms2[i])/fullms2[i])*1000000
+                  msb[j,13]<- ppmdif
+                  msb[j,12]<-names(fullmsset)[i]
+                  }
+                } else{
               ppmdif<-((as.numeric(msb[1])-fullms2[i])/fullms2[i])*1000000
               msb[,13]<- ppmdif
-              msb[,12]<-names(fullmsset)[i]
-            }
+              msb[,12]<-names(fullmsset)[i]} }
+
+            #msb<-as.data.frame(msb)
             msbc<-rbind(msb,msbc)
-          }
+            }
+
+
 
           if (nrow(msbc) == 0)  {
             next
@@ -99,14 +111,16 @@ FullMS<-function(file, database, rtw = 10, mzw = 0.001, dmzgap = 50,
           msbc<-as.data.frame(msbc)
 
 
-          ions1bb <- data.frame(name, msbc[, 1],msbc[, 3],msbc[,4],as.numeric(as.character(msbc[, 5]))/60,
+          ions1bb <- data.frame(name, as.numeric(as.character(msbc[,1])),as.numeric(as.character(msbc[,3])),as.numeric(as.character(msbc[,4])),as.numeric(as.character(msbc[, 5]))/60,
 
                                  as.numeric(as.character(msbc[, 7]))/60 -  as.numeric(as.character(msbc[, 6]))/60,
 
                                 ((as.numeric(as.character(msbc[, 7]))/60) -  (as.numeric(as.character(msbc[, 5]))/60))/((as.numeric(as.character(msbc[, 5]))/60)-(as.numeric(as.character(msbc[, 6]))/60)),
 
-                                msbc[,10],msbc[,12],msbc[,13])
-          ms <- rbind(ions1bb, ms)}}
+                                as.numeric(as.character(msbc[,10])),(as.character(msbc[,12])),as.numeric(as.character(msbc[,13])))
+          ms <- rbind(ions1bb, ms)
+          }
+      }
 
 
 
@@ -122,6 +136,7 @@ FullMS<-function(file, database, rtw = 10, mzw = 0.001, dmzgap = 50,
   rownames(ms) <- c()
 
   results<- list(RawData1=ms1$Scans[[2]],ms=ms,Peaklist=ms1$Peaklist,PP=ms1)
+
   write.csv(ms,paste0("FullMSannotated",ion_mode,".csv"))
   return(results)
 }

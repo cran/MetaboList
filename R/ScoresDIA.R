@@ -38,16 +38,13 @@ CE<-CE
   }
 
 
-  peakmin<-as.data.frame( peakmin)
-  peakmax<-as.data.frame(peakmax)
-  npeakmin<-peakmin[order(peakmin$RT),]
-  npeakmax<-peakmax[order(peakmax$RT),]
+  peakmin <- as.data.frame(peakmin)
+  peakmax <- as.data.frame(peakmax)
+  npeakmin <- peakmin[order(peakmin$RT), ]
+  npeakmax <- peakmax[order(peakmax$RT), ]
 
-  fitmin<-smooth.spline(npeakmin$RT/60, npeakmin$intensity)
-  chrommin<- data.frame(int = fitmin$y, RT = npeakmin$RT/60)
-
-  fitmax<-smooth.spline(npeakmax$RT/60, npeakmax$intensity)
-  chromax<- data.frame(int = fitmax$y, RT = npeakmax$RT/60)
+  chrommin <- data.frame(int = npeakmin$intensity, RT = (npeakmin$RT)/60)
+  chromax <- data.frame(int = npeakmax$intensity,RT = (npeakmax$RT)/60)
 
   #### plot coelution
 
@@ -62,15 +59,17 @@ CE<-CE
   ggsave(plot,filename=paste(CE,"Coelution.tiff",sep=""), dpi = 800, width = 6, height = 4, units = 'in')
 
 
+  chrommmin <- data.frame()
+  chrommin <- data.frame(int = npeakmin$intensity, RT = (npeakmin$RT))
+  chromax <- data.frame(int = npeakmax$intensity,RT = (npeakmax$RT))
 
-  chrommin<- data.frame(int = fitmin$y, RT = npeakmin$RT)
-  chromax<- data.frame(int = fitmax$y, RT = npeakmax$RT)
-  chrommmin<-data.frame()
-  chrommmin<-data.frame(chrommin$int,RT=round(chrommin$RT,digits = 0))
-  chrommmax<-data.frame()
-  chrommmax<-data.frame(chromax$int,RT=round(chromax$RT,digits = 0))
-  nmerged<-data.frame()
-  merged<-data.frame()
+  chrommmin <- data.frame(chrommin$int, RT = round(chrommin$RT,
+                                                   digits = 0))
+  chrommmax <- data.frame()
+  chrommmax <- data.frame(chromax$int, RT = round(chromax$RT,
+                                                  digits = 0))
+  nmerged <- data.frame()
+  merged <- data.frame()
   merged <- merge(chrommmin, chrommmax, by = "RT")
 
   ggplotRegression <- function (fit) {

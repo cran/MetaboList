@@ -3,7 +3,7 @@
 \title{Automatic Metabolite Annotation from LC-MS DIA experiments.}
 \description{Analysis and annotation of LC-MS/MS DIA data with the use of in-house mass spectral libraries.}
 \usage{AIF(fileMS1,fileMS2,CE=0, database,rtw=7,
-mzw=0.05,dmzgap=50,drtdens =20,drtgap=25,
+mzw=0.005,dmzgap=50,drtdens =20,drtgap=25,
 drtsmallMS1=100,drtsmallMS2=30,dmzdensMS1=15,
 dmzdensMS2=30,drtfill=5,drttotal=100,minpeakMS1=5,
 minpeakMS2=3,recurs=2,weight=2,SB=3, SN=2,

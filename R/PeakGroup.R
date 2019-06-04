@@ -28,7 +28,7 @@ for(i in 1:length(levels(f123$Metabolite))){
   ppmdif<-((as.numeric(peakG[,2])-peakG[,13])/peakG[,13])*1000000
   peakGG<-cbind(peakG,ppmdif)
   peakGF<-unique(peakGG)
-  write.csv(peakGF,paste0("PeakGroup",name,".csv"))
+  write.csv2(peakGF,paste0("PeakGroup",name,".csv"))
 
 
 }
