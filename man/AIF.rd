@@ -3,7 +3,7 @@
 \title{Automatic Metabolite Annotation from LC-MS DIA experiments.}
 \description{Analysis and annotation of LC-MS/MS DIA data with the use of in-house mass spectral libraries.}
 \usage{AIF(fileMS1,fileMS2,CE=0, database,rtw=7,
-mzw=0.005,dmzgap=50,drtdens =20,drtgap=25,
+ppm_tol=10,dmzgap=50,drtdens =20,drtgap=25,
 drtsmallMS1=100,drtsmallMS2=30,dmzdensMS1=15,
 dmzdensMS2=30,drtfill=5,drttotal=100,minpeakMS1=5,
 minpeakMS2=3,recurs=2,weight=2,SB=3, SN=2,
@@ -25,8 +25,8 @@ ion_mode="positive",ppm=TRUE,ended=6)}
   \item{rtw}{
   numeric. The difference between the theoretical retention time value and the experimental. Default value=3
   }
-  \item{mzw}{
-  numeric. The difference between the theoretical m/z value and the experimental. Default value=0.004
+  \item{ppm_tol}{
+  numeric. Mass error in ppm between the theoretical m/z value and the experimental. Default value=10
   }
   \item{dmzgap}{Arguments to be passed from \link[enviPick]{enviPickwrap}}
   \item{dmzdensMS1}{Arguments to be passed from \link[enviPick]{enviPickwrap}for MS1 mode}
@@ -56,10 +56,7 @@ ion_mode="positive",ppm=TRUE,ended=6)}
 \value{
   \item{ms1}{Peak picking for MS1 level}
   \item{ms2}{Peak picking for MS2 level}
-  \item{annotation}{Annotated metabolites after interrogation with library. In case a feature appears at more than one retention time, that one with highest intensity is selected.}
   \item{annotationfull}{Matrix with the metabolites annotated.}
-  \item{nodetected}{List with the fragments no detected to each metabolite.}
-  \item{nodetectedMS2}{List with the fragments no detected to each metabolite considering remaining ion molecular in MS2}
   \item{RawData1}{Raw scans from raw data.}
   \item{RawData2}{Raw scans from raw data.}
 

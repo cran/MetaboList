@@ -1,4 +1,4 @@
-FullMS<-function(file, database, rtw = 10, mzw = 0.0004, dmzgap = 50,
+FullMS<-function(file, database, rtw = 10, mzw = 0.0004,ppm_tol=10,Peak_Assy=5, dmzgap = 50,
                        dmzdens = 20, drtgap = 25, drtsmall = 50, drtdens = 20, drtfill = 5,
                        drttotal = 100, minpeak = 5, recurs = 3, weight = 1,
                        SB = 2, SN = 1.5, minint = 1000, maxint = 9e+09, ion_mode = "positive",
@@ -135,8 +135,11 @@ FullMS<-function(file, database, rtw = 10, mzw = 0.0004, dmzgap = 50,
   }
   rownames(ms) <- c()
 
-  results<- list(RawData1=ms1$Scans[[2]],ms=ms,Peaklist=ms1$Peaklist,PP=ms1)
+  fullmsFinal<-subset(ms,ms$`Error(ppm)`< + ppm_tol & ms$`Error(ppm)`> - ppm_tol)
+  FilterPeakAss<-subset(fullmsFinal,fullmsFinal$`Peak Assymetry` < Peak_Assy)
 
-  write.csv(ms,paste0("FullMSannotated",ion_mode,".csv"))
+  results<- list(RawData1=ms1$Scans[[2]],ms=FilterPeakAss,Peaklist=ms1$Peaklist,PP=ms1)
+
+  write.csv(results$ms,paste0("FullMSannotated",ion_mode,".csv"))
   return(results)
 }

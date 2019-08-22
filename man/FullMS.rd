@@ -8,7 +8,7 @@ Processing and Annotation of LC-MS Full-Scan data
 Peak picking of MS data is performed by the enviPick algorithm embedded. Second, it is performed a targeted extraction with a mass tolerance and m/z interval windows constraints for general peak grouping and library interrogation. Retention time might be considered as optional constraints. Library listing needs to follow the format following the exampled attached.
 }
 \usage{
-FullMS(file, database, rtw = 10, mzw = 0.0004,
+FullMS(file, database, rtw = 10, mzw = 0.0004,ppm_tol=10,Peak_Assy=5,
 dmzgap = 50,dmzdens = 20, drtgap = 25, drtsmall = 50,
 drtdens = 20, drtfill = 5,drttotal = 100, minpeak = 5,
 recurs = 3, weight = 1,SB = 2, SN = 1.5, minint = 1000,
@@ -26,6 +26,14 @@ ppm = TRUE,ended=6)
   \item{rtw}{
   numeric. The difference between the theoretical retention time value and the experimental. Default value=3
   }
+    \item{ppm_tol}{
+  numeric. Mass error in ppm between the theoretical mass value and the experimental. Default value=10
+  }
+    \item{Peak_Assy}{
+  numeric. Maximum peak assymetry threshold. Default value=5
+  }
+
+
   \item{mzw}{
   numeric. The difference between the theoretical m/z value and the experimental (Da). Default value=0.004
   }

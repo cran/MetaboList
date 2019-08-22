@@ -2,19 +2,20 @@
 \alias{Filter_AIF}
 \title{Automatic Metabolite Annotation from LC-MS DIA experiments.}
 \description{Analysis and annotation of LC-MS/MS DIA data with the use of in-house mass spectral libraries.}
-\usage{Filter_AIF(aif5,full=TRUE,a=0,database)}
+\usage{Filter_AIF(aif5,a=1,database,rttol=0.2)}
 \arguments{
   \item{aif5}{
  DIA file processed
 }
-  \item{full}{
-  Option for annotated DIA file.
-}
+
   \item{a}{
    Rule to restrict number of product ions.
 }
   \item{database}{
   database employed for targeted annotation.
+  }
+   \item{rttol}{
+  numeric. Retention time tolerance for aligning fragments and precursors.Default value=0.2min
   }
 
 }

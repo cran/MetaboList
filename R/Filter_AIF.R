@@ -1,106 +1,63 @@
 
 
-Filter_AIF<-function(aif5,full=TRUE,a=0,database){
+Filter_AIF<-function(aif5,a=1,database,rttol=0.2){
 "Rt(min)"=NULL
 peakGG<-data.frame()
-Filtered<-data.frame()
-if (full=="TRUE"){
-Num<-length(levels(aif5$annotationfull$name))
-
-Annotated<-aif5$annotationfull
 
 
+  Num<-length(levels(aif5$annotationfull$name))
 
+   Annotated<-aif5$annotationfull
+
+
+peakGGG<-data.frame()
 for(i in 1:Num){
   name<-levels(Annotated$name)[i]
   peakG<-c()
   peakG <- Annotated[which(Annotated$name == name), ]
   nameDatabase<-trimws(name)
   DatabaseMet<-database[which(database$Metabolites == (nameDatabase)),]
-  peakG$`Rt(min)` <- round(peakG$`Rt(min)`, digits = 1)
+  peakG$`Rt(min)` <- round(peakG$`Rt(min)`, digits = 2)
   options(digits=9)
   fragments <- as.numeric(DatabaseMet[, 3:length(DatabaseMet[,])])
   fragments <-  fragments[!is.na(fragments)]
   NFragments<-length(fragments)
 
-  N=NFragments+1
+  MS1<-subset(peakG,peakG$`MS Level`==1)
+  MS2<-subset(peakG,peakG$`MS Level`==2)
+  rttol<-rttol
 
-  SubsetMS2<-subset(peakG,peakG$`MS Level`==2)
-  if( nrow(SubsetMS2)>0){
 
-  Filtered <-data.frame(peakG %>% group_by(`Rt(min)`) %>% filter(n() >= N-a))
+  if( nrow(MS2)>0& nrow(MS1)>0){
+    if(a==1){
+      NMS2_matching_MS1<-1}
+    if(a==0){
+      NMS2_matching_MS1<-NFragments}
 
-  if(nrow(Filtered)>0){
-   peakGG<-rbind(peakGG,Filtered)
+       peakGG<-data.frame()
+          for (i in 1:nrow(MS1)){
+
+            matches<-data.frame()
+            if (sum(abs(MS1$`Rt(min)`[i] - as.numeric(MS2$`Rt(min)`)) <
+                    rttol) >= NMS2_matching_MS1){
+              rowsMS2 <-MS2[(abs(MS1$`Rt(min)`[i] - as.numeric(MS2$`Rt(min)`)) <= rttol),]
+              rowsMS1 <-MS1[i,]
+              matches<-rbind(rowsMS1,rowsMS2) }
+
+            if(nrow(matches)>0){
+              peakGG<-rbind(peakGG,matches)}
+
+          }
   }
 
-}}
-
-
-
-  write.csv2(peakGG,file="Filter_AIF.csv")
-  return(length(unique(peakGG$name)))
-
-}else{
-
-  Num<-length(levels(aif5$annotation$Metabolite))
-
-  Annotated<-aif5$annotation
-
-
-
-  for(i in 1:Num){
-    name<-levels(Annotated$Metabolite)[i]
-    peakG<-c()
-    peakG <- Annotated[which(Annotated$Metabolite == name), ]
-    nameDatabase<-trimws(name)
-    DatabaseMet<-database[which(database$Metabolites == (nameDatabase)),]
-    peakG$`Rt(min)` <- round(peakG$`Rt(min)`, digits = 1)
-    options(digits=9)
-    fragments <- as.numeric(DatabaseMet[, 3:length(DatabaseMet[,])])
-    fragments <-  fragments[!is.na(fragments)]
-    NFragments<-length(fragments)
-
-
-    N=NFragments+1
-    SubsetMS2<-subset(peakG,peakG$`MS Level`==2)
-    if( nrow(SubsetMS2)>0){
-
-    Filtered <-data.frame(peakG %>% group_by(`Rt(min)`) %>% filter(n() >= N-a))
-
-    if(nrow(Filtered)>0){
-      peakGG<-rbind(peakGG,Filtered)
-    }
-    }
-  }
-
-
-
-  write.csv2(peakGG,file="Filter_AIF.csv")
-  return(length(unique(peakGG$Metabolite)))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  peakGGG<-rbind(peakGG, peakGGG)
 
   }
+FinalResult<-peakGGG[!duplicated(peakGGG), ]
 
 
-
-
-
-
+  write.csv2(FinalResult,file="Filter_AIF.csv")
+  return(length(unique(FinalResult$name)))
 
 
 }
-
